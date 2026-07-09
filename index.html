@@ -14,21 +14,20 @@
 
 <body>
 
-    <h1>Questurtle</h1>
 
-    <script src="js/script.js"></script>
+<h1 class="logo">
+    Questurtle
+</h1>
 
-</body>
 
-<main>
+<!-- ■■■■■ 홈 화면 ■■■■■ -->
+<main id="home-screen">
 
-    <!-- 🐢 프로필 -->
+    <!-- 프로필 카드-->
     <header class="profile">
 
         <div class="turtle">
-
             <h1>🐢</h1>
-
         </div>
 
         <h2>꺼북</h2>
@@ -37,34 +36,126 @@
 
     </header>
 
-    <section class="point">
+    <!-- 홈 / 포인트 카드 -->
+    <section class="point" id="point-card">
 
-        <p>⭐ 1250 P</p>
+        <p>
+        ⭐ <span class="point-number"></span> P
+        </p>
 
     </section>
 
+    <!-- 홈 / 메뉴 카드 -->
     <section class="menu">
 
         <div>
 
-        <button class="menu-button">퀘스트</button>
-        <button class="menu-button">상점</button>
+            <button class="menu-button" id="quest-button">
+            퀘스트
+            </button>
+
+            <button class="menu-button" id="shop-button">
+            상점
+            </button>
 
         </div>
 
         <div>
-        
-        <button class="menu-button">가방</button>
-        <button class="menu-button">설정</button>
+
+            <button class="menu-button">가방</button>
+            <button class="menu-button">설정</button>
 
         </div>
 
     </section>
 
+
 </main>
 
+
+<!-- ■■■■■ 포인트 화면 ■■■■■ -->
+<main id="point-screen" style="display:none;">
+
+
+    <button class="back-button">
+    ← 홈
+    </button>
+
+    <h1>💰 포인트</h1>
+
+    <section class="point">
+
+        <p>
+        ⭐ <span class="point-number"></span> P
+        </p>
+
+    </section>
+
+    <input 
+        type="number"
+        id="point-input"
+        placeholder="숫자 입력">
+
+    <div>
+        <button id="add-point">
+            적립
+        </button>
+
+        <button id="use-point">
+            사용
+        </button>
+    </div>
+
+    <div id="point-history">
+
+        <h3>📜 내역</h3>
+
+    </div>
+
+
+</main>
+
+<!-- ■■■■■ 퀘스트 화면 ■■■■■ -->
+<main id="quest-screen" style="display:none;">
+
+    <button class="back-button">
+    ← 홈
+    </button>
+
+    <h1>📝 퀘스트</h1>
+
+    <div id="quest-list">
+
+    </div>
+
+</main>
+
+
+<!-- ■■■■■ 상점 화면 ■■■■■ -->
+<main id="shop-screen" style="display:none;">
+
+    <button class="back-button">
+    ← 홈
+    </button>
+
+    <h1>🛒 상점</h1>
+
+    <p>
+    준비 중...
+    </p>
+
+</main>
+
+
+<!-- 현재 버전 -->
 <footer class="ver">
-    0.2 Ver
+    0.3 Ver
 </footer>
+
+
+<script src="js/script.js"></script>
+
+
+</body>
 
 </html>
