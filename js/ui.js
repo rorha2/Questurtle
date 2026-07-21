@@ -12,6 +12,8 @@ function hideAll(){
 
     shopScreen.style.display = "none";
 
+    bagScreen.style.display = "none";
+
     settingsScreen.style.display = "none";
 
     adminScreen.style.display = "none";

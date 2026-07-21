@@ -5,18 +5,95 @@ JavaScript 여러 줄 주석
 */
 
 
+// =====================
 // 초기 실행
+// =====================
 
-loadQuests();
+const isLoggedIn =
+checkLogin();
 
-updatePoint();
-updateHistory();
+if(isLoggedIn){
 
-checkAttendance();
+    startApp();
 
-updateQuest();
+}
 
-resetDailyQuests();
+
+// =====================
+// 앱 데이터 시작
+// =====================
+
+function startApp(){
+
+    loadCurrentUserData();
+
+    loadQuests();
+
+    updatePoint();
+
+    updateHistory();
+
+    checkAttendance();
+
+    resetDailyQuests();
+
+    updateQuest();
+
+    updateShop();
+
+}
+
+
+// =====================
+// 로그인
+// =====================
+
+loginButton.addEventListener(
+"click",
+function(){
+
+    const success =
+    login();
+
+    if(success){
+
+        startApp();
+
+    }
+
+});
+
+// 엔터키 로그인
+loginPasswordInput.addEventListener(
+"keydown",
+function(event){
+
+    if(event.key !== "Enter"){
+        return;
+    }
+
+    const success =
+    login();
+
+    if(success){
+
+        startApp();
+
+    }
+
+});
+
+// =====================
+// 로그아웃
+// =====================
+
+logoutButton.addEventListener(
+"click",
+function(){
+
+    logout();
+
+});
 
 
 // =====================
@@ -46,10 +123,10 @@ function resetDailyQuests(){
 
     lastQuestReset = today;
 
-    localStorage.setItem(
-        "lastQuestReset",
-        lastQuestReset
-    );
+    currentUser.lastQuestReset =
+    lastQuestReset;
+
+    saveUsers();
 
 }
 
@@ -71,10 +148,10 @@ function checkAttendance(){
 
     lastAttendance = today;
 
-    localStorage.setItem(
-        "lastAttendance",
-        lastAttendance
-    );
+    currentUser.lastAttendance =
+    lastAttendance;
+
+    saveUsers();
 
 }
 
@@ -179,6 +256,21 @@ shopButton.addEventListener("click",function(){
 
 
 // =====================
+// 가방
+// =====================
+
+bagButton.addEventListener("click",function(){
+
+    hideAll();
+
+    updateBag();
+
+    bagScreen.style.display = "block";
+
+});
+
+
+// =====================
 // 설정
 // =====================
 
@@ -222,6 +314,23 @@ adminLoginButton.addEventListener("click", () => {
 
 });
 
+turtleNameButton.addEventListener(
+    "click",
+    function(){
+
+        const success =
+        changeTurtleName(
+            turtleNameInput.value
+        );
+
+        if(success){
+
+            turtleNameInput.value = "";
+
+        }
+
+    }
+);
 
 
 // localStorage.clear();

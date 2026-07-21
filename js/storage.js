@@ -4,6 +4,10 @@
 
 function saveQuests(){
 
+    if(!currentUser){
+        return;
+    }
+
     const completedData = {};
 
     quests.forEach(function(quest){
@@ -13,10 +17,10 @@ function saveQuests(){
 
     });
 
-    localStorage.setItem(
-        "quests",
-        JSON.stringify(completedData)
-    );
+    currentUser.questProgress =
+    completedData;
+
+    saveUsers();
 
 }
 
@@ -27,10 +31,18 @@ function saveQuests(){
 
 function loadQuests(){
 
+    quests.forEach(function(quest){
+
+        quest.completed = false;
+
+    });
+
+    if(!currentUser){
+        return;
+    }
+
     const savedData =
-    JSON.parse(
-        localStorage.getItem("quests")
-    );
+    currentUser.questProgress;
 
     if(!savedData){
         return;
@@ -38,7 +50,11 @@ function loadQuests(){
 
     quests.forEach(function(quest){
 
-        if(savedData.hasOwnProperty(quest.id)){
+        if(
+            savedData.hasOwnProperty(
+                quest.id
+            )
+        ){
 
             quest.completed =
             savedData[quest.id];

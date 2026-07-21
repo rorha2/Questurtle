@@ -126,3 +126,220 @@ main{
 #admin-button{
     display:none;
 }
+
+/* ----- 로그인 화면 ----- */
+
+#login-screen{
+
+    min-height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+.login-box{
+
+    width:100%;
+
+    max-width:320px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:15px;
+
+    text-align:center;
+
+}
+
+.login-turtle{
+
+    font-size:70px;
+
+}
+
+.login-box input{
+
+    padding:14px;
+
+    border:1px solid #ccc;
+
+    border-radius:10px;
+
+    font-size:16px;
+
+}
+
+#login-button{
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:10px;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+}
+
+#login-message{
+
+    min-height:24px;
+
+    margin:0;
+
+}
+
+
+/* ----- 현재 로그인 사용자 ----- */
+
+.current-user-card{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin-bottom:16px;
+
+    padding:12px 16px;
+
+    border-radius:10px;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+}
+
+#current-user-icon{
+
+    font-size:24px;
+
+}
+
+.current-user-card.admin{
+
+    background:#ffe8a3;
+
+    color:#7a5700;
+
+}
+
+.current-user-card.user{
+
+    background:#bce6c8;
+
+    color:#287241;
+
+}
+
+
+/* ----- 상점 아이템 ----- */
+
+#shop-list{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.shop-item,
+.bag-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:16px;
+
+    background:#ffffff;
+    border-radius:10px;
+}
+
+.shop-item-info{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.shop-item-emoji{
+    font-size:28px;
+}
+
+.shop-item-purchase{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.buy-button{
+    padding:8px 12px;
+
+    border:none;
+    border-radius:8px;
+
+    background:#dcedc8;
+
+    cursor:pointer;
+}
+
+.buy-button:hover{
+    background:#c5e1a5;
+}
+
+
+/* ----- 가방 아이템 ----- */
+
+#bag-list{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.bag-item-count{
+    padding:6px 10px;
+
+    background:#e8f5e9;
+    border-radius:10px;
+}
+
+.bag-empty{
+    padding:30px;
+
+    background:#ffffff;
+    border-radius:10px;
+
+    color:#777;
+    text-align:center;
+}
+
+
+/* ----- 가방 아이템 사용 ----- */
+
+.bag-item-action{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.use-item-button{
+    padding:8px 12px;
+
+    border:none;
+    border-radius:8px;
+
+    background:#dcedc8;
+
+    cursor:pointer;
+}
+
+.use-item-button:hover{
+    background:#c5e1a5;
+}

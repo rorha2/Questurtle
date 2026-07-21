@@ -14,6 +14,40 @@
 
 <body>
 
+<!-- ■■■■■ 로그인 화면 ■■■■■ -->
+<main id="login-screen">
+
+    <section class="login-box">
+
+        <div class="login-turtle">
+            🐢
+        </div>
+
+        <h1>Questurtle</h1>
+
+        <input
+            type="text"
+            id="login-id"
+            placeholder="아이디"
+            autocomplete="username">
+
+        <input
+            type="password"
+            id="login-password"
+            placeholder="비밀번호"
+            autocomplete="current-password">
+
+        <button id="login-button">
+            로그인
+        </button>
+
+        <p id="login-message"></p>
+
+    </section>
+
+</main>
+
+<div id="app" style="display:none;">
 
 <h1 class="logo">
     Questurtle
@@ -23,16 +57,41 @@
 <!-- ■■■■■ 홈 화면 ■■■■■ -->
 <main id="home-screen">
 
-    <!-- 프로필 카드-->
+    <!-- 현재 로그인 사용자 -->
+    <section id="current-user-card">
+
+        <span id="current-user-icon">
+            👤
+        </span>
+
+        <span id="current-user-name">
+            사용자
+        </span>
+
+    </section>
+
+    <!-- 프로필 카드 -->
     <header class="profile">
 
         <div class="turtle">
             <h1>🐢</h1>
         </div>
 
-        <h2>꺼북</h2>
-        <p>Lv.1</p>
-        <p>[0 / 2000]</p>
+        <h2 id="profile-nickname">
+        꺼북
+        </h2>
+
+        <p>
+        Lv.<span id="turtle-level">1</span>
+        </p>
+
+        <p>
+        [
+        <span id="turtle-exp">0</span>
+        /
+        <span id="turtle-max-exp">2000</span>
+        ]
+        </p>
 
     </header>
 
@@ -62,7 +121,10 @@
 
         <div>
 
-            <button class="menu-button">가방</button>
+            <button class="menu-button" id="bag-button">
+            가방
+            </button>
+
             <button class="menu-button" id="settings-button">
             설정
             </button>
@@ -142,9 +204,33 @@
 
     <h1>🛒 상점</h1>
 
-    <p>
-    준비 중...
-    </p>
+    <section class="point">
+
+        <p>
+        ⭐ <span class="point-number"></span> P
+        </p>
+
+    </section>
+
+    <section id="shop-list">
+
+    </section>
+
+</main>
+
+
+<!-- ■■■■■ 가방 화면 ■■■■■ -->
+<main id="bag-screen" style="display:none;">
+
+    <button class="back-button">
+    ← 홈
+    </button>
+
+    <h1>🎒 가방</h1>
+
+    <section id="bag-list">
+
+    </section>
 
 </main>
 
@@ -175,12 +261,31 @@
             <button id="theme-button">기본</button>
         </div>
 
+        <div class="setting-item">
+
+        <span>🐢 거북이 이름</span>
+
+        <input
+            type="text"
+            id="turtle-name-input"
+            placeholder="거북이 이름">
+
+        <button id="turtle-name-button">
+            변경
+        </button>
+
+        </div>
+
     </section>
 
     <hr class="settings-divider">
 
     <button class="menu-button" id="admin-button">
         🔒 관리자
+    </button>
+
+    <button class="menu-button" id="logout-button">
+    로그아웃
     </button>
 
 </main>
@@ -211,16 +316,20 @@
 
 <!-- 현재 버전 -->
 <footer class="ver">
-    0.5 Ver
+    0.8 Ver
 </footer>
 
+</div>
 
 <script src="js/data.js"></script>
 <script src="js/elements.js"></script>
+<script src="js/auth.js"></script>
 <script src="js/storage.js"></script>
 <script src="js/point.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/quest.js"></script>
+<script src="js/shop.js"></script>
+<script src="js/bag.js"></script>
 <script src="js/app.js"></script>
 
 

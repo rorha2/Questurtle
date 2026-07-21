@@ -2,17 +2,13 @@
 // 데이터
 // =====================
 
-let point =
-Number(localStorage.getItem("point")) || 0;
+let point = 0;
 
-let history =
-JSON.parse(localStorage.getItem("history")) || [];
+let history = [];
 
-let lastAttendance =
-localStorage.getItem("lastAttendance") || "";
+let lastAttendance = "";
 
-let lastQuestReset =
-localStorage.getItem("lastQuestReset") || "";
+let lastQuestReset = "";
 
 
 // =====================
@@ -51,6 +47,39 @@ let quests = [
         reward: 200,
         type: "daily",
         completed: false
+    }
+
+];
+
+
+// =====================
+// 상점 아이템
+// =====================
+
+let shopItems = [
+
+    {
+        id: "turtle_snack_01",
+        name: "떡잎(50xp)",
+        price: 50,
+        exp: 50,
+        emoji: "🌿"
+    },
+
+    {
+        id: "turtle_snack_02",
+        name: "당근(200xp)",
+        price: 180,
+        exp: 200,
+        emoji: "🥕"
+    },
+
+    {
+        id: "turtle_snack_03",
+        name: "사과(500xp)",
+        price: 400,
+        exp: 500,
+        emoji: "🍎"
     }
 
 ];

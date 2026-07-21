@@ -17,10 +17,14 @@ function updateHistory(){
 
     });
 
-    localStorage.setItem(
-        "history",
-        JSON.stringify(history)
-    );
+    if(currentUser){
+
+        currentUser.history =
+        history;
+
+        saveUsers();
+
+    }
 
 }
 
@@ -37,7 +41,14 @@ function updatePoint(){
 
     });
 
-    localStorage.setItem("point", point);
+    if(currentUser){
+
+        currentUser.point =
+        point;
+
+        saveUsers();
+
+    }
 
 }
 
