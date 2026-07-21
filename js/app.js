@@ -164,6 +164,7 @@ questButton.addEventListener("click",function(){
 
 });
 
+
 // =====================
 // 상점
 // =====================
@@ -176,6 +177,50 @@ shopButton.addEventListener("click",function(){
 
 });
 
+
+// =====================
+// 설정
+// =====================
+
+settingsButton.addEventListener("click", () => {
+
+    hideAll();
+
+    settingsScreen.style.display = "block";
+
+});
+
+soundButton.addEventListener("click", () => {
+
+    alert("효과음 설정은 준비 중입니다.");
+
+});
+
+musicButton.addEventListener("click", () => {
+
+    alert("배경음 설정은 준비 중입니다.");
+
+});
+
+themeButton.addEventListener("click", () => {
+
+    alert("테마 기능은 준비 중입니다.");
+
+});
+
+adminButton.addEventListener("click", () => {
+
+    hideAll();
+
+    adminScreen.style.display = "block";
+
+});
+
+adminLoginButton.addEventListener("click", () => {
+
+    alert("다음 단계에서 비밀번호 기능을 만들 예정입니다.");
+
+});
 
 
 

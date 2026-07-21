@@ -13,6 +13,11 @@ document.getElementById("quest-screen");
 const shopScreen =
 document.getElementById("shop-screen");
 
+const settingsScreen =
+document.getElementById("settings-screen");
+
+const adminScreen =
+document.getElementById("admin-screen");
 
 
 // 포인트 표시 영역
@@ -46,6 +51,30 @@ document.getElementById("quest-button");
 
 const shopButton =
 document.getElementById("shop-button");
+
+const settingsButton =
+document.getElementById("settings-button");
+
+const soundButton =
+document.getElementById("sound-button");
+
+const musicButton =
+document.getElementById("music-button");
+
+const themeButton =
+document.getElementById("theme-button");
+
+const adminButton =
+document.getElementById("admin-button");
+
+const adminPassword =
+document.getElementById("admin-password");
+
+const adminLoginButton =
+document.getElementById("admin-login-button");
+
+
+// 퀘스트 목록
 
 const questList =
 document.getElementById("quest-list");

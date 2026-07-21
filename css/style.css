@@ -102,3 +102,27 @@ main{
     text-align: center;
     color: gray
 }
+
+/* ----- 설정 화면 ----- */
+.settings-list{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+    margin:25px 0;
+}
+
+.setting-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.settings-divider{
+    margin:30px 0;
+    border:none;
+    border-top:1px solid #ddd;
+}
+
+#admin-button{
+    display:none;
+}

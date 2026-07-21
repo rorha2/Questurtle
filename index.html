@@ -63,7 +63,9 @@
         <div>
 
             <button class="menu-button">가방</button>
-            <button class="menu-button">설정</button>
+            <button class="menu-button" id="settings-button">
+            설정
+            </button>
 
         </div>
 
@@ -143,6 +145,66 @@
     <p>
     준비 중...
     </p>
+
+</main>
+
+
+<!-- ■■■■■ 설정 화면 ■■■■■ -->
+<main id="settings-screen" style="display:none;">
+
+    <button class="back-button">
+        ← 홈
+    </button>
+
+    <h1>⚙️ 설정</h1>
+
+    <section class="settings-list">
+
+        <div class="setting-item">
+            <span>🔊 효과음</span>
+            <button id="sound-button">ON</button>
+        </div>
+
+        <div class="setting-item">
+            <span>🎵 배경음</span>
+            <button id="music-button">ON</button>
+        </div>
+
+        <div class="setting-item">
+            <span>🎨 테마</span>
+            <button id="theme-button">기본</button>
+        </div>
+
+    </section>
+
+    <hr class="settings-divider">
+
+    <button class="menu-button" id="admin-button">
+        🔒 관리자
+    </button>
+
+</main>
+
+
+<!-- ■■■■■ 관리자 화면 ■■■■■ -->
+<main id="admin-screen" style="display:none;">
+
+    <button class="back-button">
+        ← 설정
+    </button>
+
+    <h1>🔒 관리자</h1>
+
+    <p>관리자 비밀번호를 입력하세요.</p>
+
+    <input
+        type="password"
+        id="admin-password"
+        placeholder="비밀번호">
+
+    <button class="menu-button" id="admin-login-button">
+        확인
+    </button>
 
 </main>
 
