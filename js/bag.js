@@ -52,9 +52,11 @@ function updateBag(){
 
             bagItem.innerHTML =
             "<div class='shop-item-info'>" +
-                "<span class='shop-item-emoji'>" +
-                    item.emoji +
-                "</span>" +
+                "<img class='shop-item-image'" +
+                    " src='" +
+                    item.image +
+                    "'" +
+                    " alt=''>" +
                 "<span>" +
                     item.name +
                 "</span>" +
@@ -67,7 +69,7 @@ function updateBag(){
                     "개" +
                 "</strong>" +
 
-                "<button class='use-item-button'" +
+                "<button class='use-item-button action-button'" +
                 " onclick=\"useInventoryItem('" +
                 item.id +
                 "')\">" +
@@ -134,10 +136,14 @@ function useInventoryItem(itemId){
         return false;
     }
 
-    const confirmed =
+    const turtleName =
+        formatCharacterName(
+            currentUser?.turtle?.name ||
+            "거북이"
+    );
+
     confirm(
-        item.name +
-        "\n거북이에게 줄까요?"
+        turtleName + "에게 줄까요?"
     );
 
     if(!confirmed){

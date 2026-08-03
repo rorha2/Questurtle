@@ -33,8 +33,6 @@ function startApp(){
 
     updateHistory();
 
-    checkAttendance();
-
     resetDailyQuests();
 
     updateQuest();
@@ -132,29 +130,33 @@ function resetDailyQuests(){
 
 
 // =====================
-// 출석 보상
+// 홈으로 이동
 // =====================
 
-function checkAttendance(){
+function goHome(){
 
-    const today =
-    new Date().toLocaleDateString("sv-SE");
+    hideAll();
 
-    if(lastAttendance === today){
-        return;
-    }
-
-    givePoint(100, "출석 보상");
-
-    lastAttendance = today;
-
-    currentUser.lastAttendance =
-    lastAttendance;
-
-    saveUsers();
+    homeScreen.style.display =
+    "block";
 
 }
 
+homeLogoButton.addEventListener(
+    "click",
+    goHome
+);
+
+document
+.querySelectorAll(".home-button")
+.forEach(function(button){
+
+    button.addEventListener(
+        "click",
+        goHome
+    );
+
+});
 
 
 // =====================
@@ -178,13 +180,30 @@ document
 .querySelectorAll(".back-button")
 .forEach(function(button){
 
-    button.addEventListener("click",function(){
+    button.addEventListener(
+        "click",
+        function(){
 
-        hideAll();
+            const targetScreenId =
+            button.dataset.backTarget ||
+            "home-screen";
 
-        homeScreen.style.display="block";
+            const targetScreen =
+            document.getElementById(
+                targetScreenId
+            );
 
-    });
+            if(!targetScreen){
+                return;
+            }
+
+            hideAll();
+
+            targetScreen.style.display =
+            "block";
+
+        }
+    );
 
 });
 
@@ -222,9 +241,12 @@ usePointButton.addEventListener("click",function(){
         return;
         }
 
-    usePoint(amount, "직접 사용");
+    const success =
+        usePoint(amount, "직접 사용");
 
-    pointInput.value = "";
+        if(success){
+            pointInput.value = "";
+        }
 
 });
 
@@ -294,11 +316,113 @@ musicButton.addEventListener("click", () => {
 
 });
 
-themeButton.addEventListener("click", () => {
+function updateThemeOptions(){
 
-    alert("테마 기능은 준비 중입니다.");
+    themeOptionsBox.innerHTML = "";
 
-});
+    themeList.forEach(function(theme){
+
+        const button =
+        document.createElement("button");
+
+        button.type = "button";
+
+        button.className =
+        "theme-option";
+
+        button.textContent =
+        theme.icon + " " + theme.name;
+
+        const isSelected =
+        currentUser.theme === theme.id;
+
+        button.classList.toggle(
+            "is-selected",
+            isSelected
+        );
+
+        button.setAttribute(
+            "aria-pressed",
+            String(isSelected)
+        );
+
+        button.addEventListener(
+            "click",
+            function(){
+
+                selectTheme(theme.id);
+
+                closeThemeModal();
+
+            }
+        );
+
+        themeOptionsBox.appendChild(
+            button
+        );
+
+    });
+
+}
+
+function openThemeModal(){
+
+    updateThemeOptions();
+
+    themeModal.style.display = "flex";
+
+    themeModal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+}
+
+function closeThemeModal(){
+
+    themeModal.style.display = "none";
+
+    themeModal.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+}
+
+themeButton.addEventListener(
+    "click",
+    openThemeModal
+);
+
+themeModal.addEventListener(
+    "click",
+    function(event){
+
+        if(event.target === themeModal){
+
+            closeThemeModal();
+
+        }
+
+    }
+);
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key === "Escape" &&
+            themeModal.style.display ===
+            "flex"
+        ){
+
+            closeThemeModal();
+
+        }
+
+    }
+);
 
 adminButton.addEventListener("click", () => {
 
@@ -314,18 +438,342 @@ adminLoginButton.addEventListener("click", () => {
 
 });
 
-turtleNameButton.addEventListener(
+
+// =====================
+// 프로필 수정
+// =====================
+
+let selectedProfileIcon = "";
+
+function resizeProfilePhoto(file){
+
+    return new Promise(
+        function(resolve, reject){
+
+            const reader =
+            new FileReader();
+
+            reader.addEventListener(
+                "load",
+                function(){
+
+                    const image =
+                    new Image();
+
+                    image.addEventListener(
+                        "load",
+                        function(){
+
+                            const cropSize =
+                            Math.min(
+                                image.naturalWidth,
+                                image.naturalHeight
+                            );
+
+                            const cropX =
+                            (
+                                image.naturalWidth -
+                                cropSize
+                            ) / 2;
+
+                            const cropY =
+                            (
+                                image.naturalHeight -
+                                cropSize
+                            ) / 2;
+
+                            const canvas =
+                            document.createElement(
+                                "canvas"
+                            );
+
+                            canvas.width = 256;
+                            canvas.height = 256;
+
+                            const context =
+                            canvas.getContext("2d");
+
+                            context.drawImage(
+                                image,
+                                cropX,
+                                cropY,
+                                cropSize,
+                                cropSize,
+                                0,
+                                0,
+                                256,
+                                256
+                            );
+
+                            resolve(
+                                canvas.toDataURL(
+                                    "image/webp",
+                                    0.82
+                                )
+                            );
+
+                        }
+                    );
+
+                    image.addEventListener(
+                        "error",
+                        reject
+                    );
+
+                    image.src =
+                    reader.result;
+
+                }
+            );
+
+            reader.addEventListener(
+                "error",
+                reject
+            );
+
+            reader.readAsDataURL(file);
+
+        }
+    );
+
+}
+
+function updateProfileIconPreview(){
+
+    renderProfileIcon(
+        profileIconPreview,
+        selectedProfileIcon
+    );
+
+    profileIconOptions.forEach(
+        function(option){
+
+            const isSelected =
+            option.dataset.icon ===
+            selectedProfileIcon;
+
+            option.classList.toggle(
+                "is-selected",
+                isSelected
+            );
+
+            option.setAttribute(
+                "aria-pressed",
+                String(isSelected)
+            );
+
+        }
+    );
+
+}
+
+function openProfileIconModal(){
+
+    updateProfileIconPreview();
+
+    profileIconModal.style.display =
+    "flex";
+
+    profileIconModal.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+}
+
+function closeProfileIconModal(){
+
+    profileIconModal.style.display =
+    "none";
+
+    profileIconModal.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+}
+
+function openProfileEditScreen(){
+
+    if(
+        !currentUser ||
+        currentUser.role !== "user"
+    ){
+        return;
+    }
+
+    profileNicknameInput.value =
+    currentUser.nickname;
+
+    profileTurtleNameInput.value =
+    currentUser.turtle.name;
+
+    selectedProfileIcon =
+    currentUser.profileIcon ||
+    currentUser.profileEmoji ||
+    "❤️";
+
+    updateProfileIconPreview();
+
+    hideAll();
+
+    profileEditScreen.style.display =
+    "block";
+
+}
+
+function closeProfileEditScreen(){
+
+    closeProfileIconModal();
+
+    hideAll();
+
+    settingsScreen.style.display =
+    "block";
+
+}
+
+profileEditButton.addEventListener(
+    "click",
+    openProfileEditScreen
+);
+
+profileEditBackButton.addEventListener(
+    "click",
+    closeProfileEditScreen
+);
+
+profileEditCancelButton.addEventListener(
+    "click",
+    closeProfileEditScreen
+);
+
+profileEditSaveButton.addEventListener(
     "click",
     function(){
 
         const success =
-        changeTurtleName(
-            turtleNameInput.value
+        changeCurrentUserProfile(
+            profileNicknameInput.value,
+            profileTurtleNameInput.value,
+            selectedProfileIcon
         );
 
-        if(success){
+        if(!success){
 
-            turtleNameInput.value = "";
+            alert(
+                "사용자명과 거북이 이름을 모두 입력해주세요."
+            );
+
+            return;
+
+        }
+
+        alert("프로필이 저장되었어요.");
+
+        closeProfileEditScreen();
+
+    }
+);
+
+profileIconButton.addEventListener(
+    "click",
+    openProfileIconModal
+);
+
+profileIconOptions.forEach(
+    function(option){
+
+        option.addEventListener(
+            "click",
+            function(){
+
+                selectedProfileIcon =
+                option.dataset.icon;
+
+                updateProfileIconPreview();
+
+                closeProfileIconModal();
+
+            }
+        );
+
+    }
+);
+
+profilePhotoInput.addEventListener(
+    "change",
+    async function(){
+
+        const file =
+        profilePhotoInput.files[0];
+
+        if(!file){
+            return;
+        }
+
+        if(
+            !file.type.startsWith(
+                "image/"
+            )
+        ){
+
+            alert(
+                "이미지 파일을 선택해주세요."
+            );
+
+            profilePhotoInput.value = "";
+
+            return;
+
+        }
+
+        try{
+
+            selectedProfileIcon =
+            await resizeProfilePhoto(file);
+
+            updateProfileIconPreview();
+
+            closeProfileIconModal();
+
+        }catch(error){
+
+            alert(
+                "사진을 불러오지 못했어요."
+            );
+
+        }
+
+        profilePhotoInput.value = "";
+
+    }
+);
+
+profileIconModal.addEventListener(
+    "click",
+    function(event){
+
+        if(event.target === profileIconModal){
+
+            closeProfileIconModal();
+
+        }
+
+    }
+);
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key === "Escape" &&
+            profileIconModal.style.display ===
+            "flex"
+        ){
+
+            closeProfileIconModal();
 
         }
 

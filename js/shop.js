@@ -22,7 +22,7 @@ function updateShop(){
         ){
 
             purchaseButton =
-            "<button class='buy-button'" +
+            "<button class='buy-button action-button'" +
             " onclick=\"buyItem('" +
             item.id +
             "')\">" +
@@ -33,9 +33,11 @@ function updateShop(){
 
         shopItem.innerHTML =
         "<div class='shop-item-info'>" +
-            "<span class='shop-item-emoji'>" +
-            item.emoji +
-            "</span>" +
+            "<img class='shop-item-image'" +
+                " src='" +
+                item.image +
+                "'" +
+                " alt=''>" +
             "<span>" +
             item.name +
             "</span>" +

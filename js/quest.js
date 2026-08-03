@@ -48,7 +48,8 @@ function updateQuest(){
                 </p>
 
                 <button
-                    onclick="completeQuest(${index})"
+                class="action-button"
+                onclick="completeQuest(${index})"
                     ${quest.completed ? "disabled" : ""}
                 >
 

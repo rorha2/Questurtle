@@ -1,4 +1,25 @@
 // =====================
+// 테마
+// =====================
+
+const themeList = [
+
+    {
+        id: "default",
+        name: "기본",
+        icon: "🌿"
+    },
+
+    {
+        id: "night",
+        name: "밤",
+        icon: "🌙"
+    }
+
+];
+
+
+// =====================
 // 데이터
 // =====================
 
@@ -63,7 +84,8 @@ let shopItems = [
         name: "떡잎(50xp)",
         price: 50,
         exp: 50,
-        emoji: "🌿"
+        emoji: "🌿",
+        image: "images/items/exp_leaf.png"
     },
 
     {
@@ -71,7 +93,8 @@ let shopItems = [
         name: "당근(200xp)",
         price: 180,
         exp: 200,
-        emoji: "🥕"
+        emoji: "🥕",
+        image: "images/items/exp_carrot.png"
     },
 
     {
@@ -79,7 +102,8 @@ let shopItems = [
         name: "사과(500xp)",
         price: 400,
         exp: 500,
-        emoji: "🍎"
+        emoji: "🍎",
+        image: "images/items/exp_apple.png"
     }
 
 ];

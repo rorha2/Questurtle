@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Questurtle</title>
 
+    <link rel="stylesheet" href="css/themes.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -20,10 +21,16 @@
     <section class="login-box">
 
         <div class="login-turtle">
-            🐢
+            <img
+                class="login-turtle-image"
+                src="images/characters/turtle.png"
+                alt="거북이">
         </div>
 
-        <h1>Questurtle</h1>
+        <img
+                class="logo-image"
+                src="images/logo/questurtle-logo.png"
+                alt="Questurtle">
 
         <input
             type="text"
@@ -49,9 +56,22 @@
 
 <div id="app" style="display:none;">
 
-<h1 class="logo">
-    Questurtle
-</h1>
+    <h1 class="logo">
+
+        <button
+            type="button"
+            class="logo-button"
+            id="home-logo-button"
+            aria-label="홈으로 이동">
+
+            <img
+                class="logo-image"
+                src="images/logo/questurtle-logo.png"
+                alt="Questurtle">
+
+        </button>
+
+    </h1>
 
 
 <!-- ■■■■■ 홈 화면 ■■■■■ -->
@@ -73,8 +93,28 @@
     <!-- 프로필 카드 -->
     <header class="profile">
 
-        <div class="turtle">
-            <h1>🐢</h1>
+        <div class="turtle-stage">
+
+            <div
+                class="turtle-reward"
+                id="turtle-reward">
+            </div>
+
+            <div class="turtle">
+                <p
+                    class="turtle-speech"
+                    id="turtle-speech"
+                    aria-live="polite">
+                </p>
+                <div class="turtle-wrapper">
+                    <img
+                        class="turtle-character-image"
+                        id="turtle-character"
+                        src="images/characters/turtle.png"
+                        alt="거북이">
+                </div>
+            </div>
+
         </div>
 
         <h2 id="profile-nickname">
@@ -141,11 +181,40 @@
 <main id="point-screen" style="display:none;">
 
 
-    <button class="back-button">
-    ← 홈
-    </button>
+    <nav
+        class="screen-navigation"
+        aria-label="화면 이동">
 
-    <h1>💰 포인트</h1>
+        <button
+            type="button"
+            class="navigation-button back-button"
+            aria-label="뒤로가기">
+
+            <img
+                src="images/icons/back_arrow.png"
+                alt="">
+
+        </button>
+
+        <button
+            type="button"
+            class="navigation-button home-button"
+            aria-label="홈으로 이동">
+
+            <img
+                src="images/icons/home.png"
+                alt="">
+
+        </button>
+
+    </nav>
+
+    <h1>
+        <img
+            class="menu-icon-image"
+            src="images/icons/point.png"
+            alt="">
+        포인트</h1>
 
     <section class="point">
 
@@ -155,12 +224,13 @@
 
     </section>
 
-    <input 
-        type="number"
-        id="point-input"
-        placeholder="숫자 입력">
+    <div class="point-actions">
 
-    <div>
+        <input 
+            type="number"
+            id="point-input"
+            placeholder="포인트 입력">
+
         <button id="add-point">
             적립
         </button>
@@ -168,6 +238,7 @@
         <button id="use-point">
             사용
         </button>
+
     </div>
 
     <div id="point-history">
@@ -182,11 +253,40 @@
 <!-- ■■■■■ 퀘스트 화면 ■■■■■ -->
 <main id="quest-screen" style="display:none;">
 
-    <button class="back-button">
-    ← 홈
-    </button>
+    <nav
+        class="screen-navigation"
+        aria-label="화면 이동">
 
-    <h1>📝 퀘스트</h1>
+        <button
+            type="button"
+            class="navigation-button back-button"
+            aria-label="뒤로가기">
+
+            <img
+                src="images/icons/back_arrow.png"
+                alt="">
+
+        </button>
+
+        <button
+            type="button"
+            class="navigation-button home-button"
+            aria-label="홈으로 이동">
+
+            <img
+                src="images/icons/home.png"
+                alt="">
+
+        </button>
+
+    </nav>
+
+        <h1>
+        <img
+            class="menu-icon-image"
+            src="images/icons/quest.png"
+            alt="">
+        퀘스트</h1>
 
     <div id="quest-list">
 
@@ -198,11 +298,40 @@
 <!-- ■■■■■ 상점 화면 ■■■■■ -->
 <main id="shop-screen" style="display:none;">
 
-    <button class="back-button">
-    ← 홈
-    </button>
+    <nav
+        class="screen-navigation"
+        aria-label="화면 이동">
 
-    <h1>🛒 상점</h1>
+        <button
+            type="button"
+            class="navigation-button back-button"
+            aria-label="뒤로가기">
+
+            <img
+                src="images/icons/back_arrow.png"
+                alt="">
+
+        </button>
+
+        <button
+            type="button"
+            class="navigation-button home-button"
+            aria-label="홈으로 이동">
+
+            <img
+                src="images/icons/home.png"
+                alt="">
+
+        </button>
+
+    </nav>
+
+        <h1>
+        <img
+            class="menu-icon-image"
+            src="images/icons/shop.png"
+            alt="">
+        상점</h1>
 
     <section class="point">
 
@@ -222,11 +351,40 @@
 <!-- ■■■■■ 가방 화면 ■■■■■ -->
 <main id="bag-screen" style="display:none;">
 
-    <button class="back-button">
-    ← 홈
-    </button>
+    <nav
+        class="screen-navigation"
+        aria-label="화면 이동">
 
-    <h1>🎒 가방</h1>
+        <button
+            type="button"
+            class="navigation-button back-button"
+            aria-label="뒤로가기">
+
+            <img
+                src="images/icons/back_arrow.png"
+                alt="">
+
+        </button>
+
+        <button
+            type="button"
+            class="navigation-button home-button"
+            aria-label="홈으로 이동">
+
+            <img
+                src="images/icons/home.png"
+                alt="">
+
+        </button>
+
+    </nav>
+
+        <h1>
+            <img
+            class="menu-icon-image"
+            src="images/icons/bag.png"
+            alt="">
+        가방</h1>
 
     <section id="bag-list">
 
@@ -238,11 +396,40 @@
 <!-- ■■■■■ 설정 화면 ■■■■■ -->
 <main id="settings-screen" style="display:none;">
 
-    <button class="back-button">
-        ← 홈
-    </button>
+    <nav
+        class="screen-navigation"
+        aria-label="화면 이동">
 
-    <h1>⚙️ 설정</h1>
+        <button
+            type="button"
+            class="navigation-button back-button"
+            aria-label="뒤로가기">
+
+            <img
+                src="images/icons/back_arrow.png"
+                alt="">
+
+        </button>
+
+        <button
+            type="button"
+            class="navigation-button home-button"
+            aria-label="홈으로 이동">
+
+            <img
+                src="images/icons/home.png"
+                alt="">
+
+        </button>
+
+    </nav>
+
+        <h1>
+            <img
+            class="menu-icon-image"
+            src="images/icons/settings.png"
+            alt="">
+        설정</h1>
 
     <section class="settings-list">
 
@@ -261,21 +448,6 @@
             <button id="theme-button">기본</button>
         </div>
 
-        <div class="setting-item">
-
-        <span>🐢 거북이 이름</span>
-
-        <input
-            type="text"
-            id="turtle-name-input"
-            placeholder="거북이 이름">
-
-        <button id="turtle-name-button">
-            변경
-        </button>
-
-        </div>
-
     </section>
 
     <hr class="settings-divider">
@@ -284,19 +456,216 @@
         🔒 관리자
     </button>
 
-    <button class="menu-button" id="logout-button">
-    로그아웃
+    <div class="settings-actions">
+
+    <button
+        class="menu-button"
+        id="profile-edit-button">
+        프로필 수정
     </button>
 
+    <button
+        class="menu-button"
+        id="logout-button">
+        로그아웃
+    </button>
+
+    </div>
+
 </main>
+
+<!-- ■■■■■ 프로필 수정 화면 ■■■■■ -->
+<main id="profile-edit-screen" style="display:none;">
+
+    <nav
+        class="screen-navigation"
+        aria-label="화면 이동">
+
+        <button
+            type="button"
+            class="navigation-button"
+            id="profile-edit-back-button"
+            aria-label="설정으로 돌아가기">
+
+            <img
+                src="images/icons/back_arrow.png"
+                alt="">
+
+        </button>
+
+        <button
+            type="button"
+            class="navigation-button home-button"
+            aria-label="홈으로 이동">
+
+            <img
+                src="images/icons/home.png"
+                alt="">
+
+        </button>
+
+    </nav>
+
+        <h1>프로필 수정</h1>
+
+        <section class="profile-edit-form">
+
+            <label for="profile-nickname-input">
+                사용자명
+            </label>
+
+            <button
+                type="button"
+                class="profile-icon-button"
+                id="profile-icon-button">
+
+                <span id="profile-icon-preview">
+                    👤
+                </span>
+
+                <span>아이콘 변경</span>
+            </button>
+
+            <input
+                type="text"
+                id="profile-nickname-input"
+                placeholder="사용자명">
+
+            <label for="profile-turtle-name-input">
+                거북이 이름
+            </label>
+
+            <input
+                type="text"
+                id="profile-turtle-name-input"
+                placeholder="거북이 이름">
+
+        </section>
+
+        <div class="profile-edit-actions">
+
+            <button
+                class="menu-button"
+                id="profile-edit-cancel-button">
+                취소
+            </button>
+
+            <button
+                class="menu-button"
+                id="profile-edit-save-button">
+                저장
+            </button>
+
+        </div>
+
+</main>
+
+<!-- ■■■■■ 아이콘 선택 팝업 ■■■■■ -->
+<div
+    class="modal-overlay"
+    id="profile-icon-modal"
+    aria-hidden="true"
+    style="display:none;">
+
+    <section
+        class="modal-popup"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="profile-icon-title">
+
+        <h2 id="profile-icon-title">
+            아이콘 선택
+        </h2>
+
+        <div class="profile-icon-options">
+
+            <button type="button" class="profile-icon-option" data-icon="❤️" aria-label="빨간 하트">❤️</button>
+            <button type="button" class="profile-icon-option" data-icon="🩷" aria-label="분홍 하트">🩷</button>
+            <button type="button" class="profile-icon-option" data-icon="🧡" aria-label="주황 하트">🧡</button>
+            <button type="button" class="profile-icon-option" data-icon="💛" aria-label="노란 하트">💛</button>
+            <button type="button" class="profile-icon-option" data-icon="💚" aria-label="초록 하트">💚</button>
+            <button type="button" class="profile-icon-option" data-icon="🩵" aria-label="하늘색 하트">🩵</button>
+            <button type="button" class="profile-icon-option" data-icon="💙" aria-label="파란 하트">💙</button>
+            <button type="button" class="profile-icon-option" data-icon="💜" aria-label="보라 하트">💜</button>
+            <button type="button" class="profile-icon-option" data-icon="🤍" aria-label="흰색 하트">🤍</button>
+            <button type="button" class="profile-icon-option" data-icon="🖤" aria-label="검은 하트">🖤</button>
+
+        </div>
+
+        <label
+            class="profile-photo-upload-button"
+            for="profile-photo-input">
+            프로필 사진 첨부
+        </label>
+
+        <input
+            type="file"
+            id="profile-photo-input"
+            accept="image/*">
+
+    </section>
+
+</div>
+
+
+<!-- ■■■■■ 테마 선택 팝업 ■■■■■ -->
+<div
+    class="modal-overlay"
+    id="theme-modal"
+    aria-hidden="true"
+    style="display:none;">
+
+    <section
+        class="modal-popup"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="theme-modal-title">
+
+        <h2 id="theme-modal-title">
+            테마 선택
+        </h2>
+
+        <div
+            class="theme-options"
+            id="theme-options">
+        </div>
+
+    </section>
+
+</div>
 
 
 <!-- ■■■■■ 관리자 화면 ■■■■■ -->
 <main id="admin-screen" style="display:none;">
 
-    <button class="back-button">
-        ← 설정
-    </button>
+    <nav
+        class="screen-navigation"
+        aria-label="화면 이동">
+
+        <button
+            type="button"
+            class="navigation-button back-button"
+            data-back-target="settings-screen"
+            aria-label="설정으로 돌아가기">
+
+            <img
+                src="images/icons/back_arrow.png"
+                alt="">
+
+        </button>
+
+        <button
+            type="button"
+            class="navigation-button home-button"
+            aria-label="홈으로 이동">
+
+            <img
+                src="images/icons/home.png"
+                alt="">
+
+        </button>
+
+    </nav>
 
     <h1>🔒 관리자</h1>
 
@@ -316,11 +685,12 @@
 
 <!-- 현재 버전 -->
 <footer class="ver">
-    0.8 Ver
+    0.93 Ver
 </footer>
 
 </div>
 
+<script src="js/utils.js"></script>
 <script src="js/data.js"></script>
 <script src="js/elements.js"></script>
 <script src="js/auth.js"></script>
@@ -331,6 +701,9 @@
 <script src="js/shop.js"></script>
 <script src="js/bag.js"></script>
 <script src="js/app.js"></script>
+<script src="js/turtle-dialogue.js"></script>
+<script src="js/turtle.js"></script>
+<script src="js/turtle-interaction.js"></script>
 
 
 </body>

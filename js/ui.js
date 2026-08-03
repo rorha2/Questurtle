@@ -16,6 +16,9 @@ function hideAll(){
 
     settingsScreen.style.display = "none";
 
+    profileEditScreen.style.display = "none";
+
     adminScreen.style.display = "none";
 
 }
+

@@ -25,6 +25,11 @@ document.getElementById("bag-screen");
 const settingsScreen =
 document.getElementById("settings-screen");
 
+const profileEditScreen =
+document.getElementById(
+    "profile-edit-screen"
+);
+
 const adminScreen =
 document.getElementById("admin-screen");
 
@@ -39,12 +44,6 @@ document.getElementById("current-user-icon");
 
 const currentUserName =
 document.getElementById("current-user-name");
-
-const turtleNameInput =
-document.getElementById("turtle-name-input");
-
-const turtleNameButton =
-document.getElementById("turtle-name-button");
 
 const turtleLevel =
 document.getElementById("turtle-level");
@@ -87,9 +86,6 @@ document.getElementById("login-message");
 const pointCard =
 document.getElementById("point-card");
 
-const backButton =
-document.getElementById("back-button");
-
 const addPointButton =
 document.getElementById("add-point");
 
@@ -117,6 +113,12 @@ document.getElementById("music-button");
 const themeButton =
 document.getElementById("theme-button");
 
+const themeModal =
+document.getElementById("theme-modal");
+
+const themeOptionsBox =
+document.getElementById("theme-options");
+
 const adminButton =
 document.getElementById("admin-button");
 
@@ -131,6 +133,66 @@ document.getElementById("login-button");
 
 const logoutButton =
 document.getElementById("logout-button");
+
+const profileEditButton =
+document.getElementById(
+    "profile-edit-button"
+);
+
+const profileEditBackButton =
+document.getElementById(
+    "profile-edit-back-button"
+);
+
+const profileEditCancelButton =
+document.getElementById(
+    "profile-edit-cancel-button"
+);
+
+const profileEditSaveButton =
+document.getElementById(
+    "profile-edit-save-button"
+);
+
+const profileNicknameInput =
+document.getElementById(
+    "profile-nickname-input"
+);
+
+const profileTurtleNameInput =
+document.getElementById(
+    "profile-turtle-name-input"
+);
+
+const profileIconButton =
+document.getElementById(
+    "profile-icon-button"
+);
+
+const profileIconPreview =
+document.getElementById(
+    "profile-icon-preview"
+);
+
+const profileIconModal =
+document.getElementById(
+    "profile-icon-modal"
+);
+
+const profileIconOptions =
+document.querySelectorAll(
+    ".profile-icon-option"
+);
+
+const profilePhotoInput =
+document.getElementById(
+    "profile-photo-input"
+);
+
+const homeLogoButton =
+document.getElementById(
+    "home-logo-button"
+);
 
 
 // 상점 목록

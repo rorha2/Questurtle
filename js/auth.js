@@ -50,7 +50,8 @@ if(!users){
             password: "1",
             nickname: "관리자",
             role: "admin",
-            profileEmoji: "👑",
+            profileIcon: "👑",
+            theme: "default",
 
             turtle: {
 
@@ -68,7 +69,8 @@ if(!users){
             password: "2",
             nickname: "김거북",
             role: "user",
-            profileEmoji: "👤",
+            profileIcon: "❤️",
+            theme: "default",
 
             turtle: {
 
@@ -96,17 +98,30 @@ let usersUpdated = false;
 
 users.forEach(function(user){
 
-    if(!user.profileEmoji){
+    const themeExists =
+    themeList.some(function(theme){
 
-        if(user.role === "admin"){
+        return theme.id === user.theme;
 
-            user.profileEmoji = "👑";
+    });
 
-        }else{
+    if(!themeExists){
 
-            user.profileEmoji = "👤";
+        user.theme = "default";
 
-        }
+        usersUpdated = true;
+
+    }
+
+    if(!user.profileIcon){
+
+        user.profileIcon =
+        user.profileEmoji ||
+        (
+            user.role === "admin"
+            ? "👑"
+            : "❤️"
+        );
 
         usersUpdated = true;
 
@@ -272,6 +287,65 @@ function saveUsers(){
 
 
 // =====================
+// 테마 적용
+// =====================
+
+function applyTheme(){
+
+    const selectedTheme =
+    themeList.find(function(theme){
+
+        return (
+            currentUser &&
+            theme.id === currentUser.theme
+        );
+
+    }) || themeList[0];
+
+    document.body.classList.remove(
+        "theme-night"
+    );
+
+    document.body.dataset.theme =
+    selectedTheme.id;
+
+    themeButton.textContent =
+    selectedTheme.name;
+
+}
+
+
+// =====================
+// 테마 선택
+// =====================
+
+function selectTheme(themeId){
+
+    if(!currentUser){
+        return;
+    }
+
+    const themeExists =
+    themeList.some(function(theme){
+
+        return theme.id === themeId;
+
+    });
+
+    if(!themeExists){
+        return;
+    }
+
+    currentUser.theme = themeId;
+
+    saveUsers();
+
+    applyTheme();
+
+}
+
+
+// =====================
 // 사용자 찾기
 // =====================
 
@@ -352,6 +426,16 @@ function checkLogin(){
 
 function showLogin(){
 
+    document.body.classList.remove(
+    "theme-night"
+    );
+
+    document.body.dataset.theme =
+    themeList[0].id;
+
+    themeButton.textContent =
+    themeList[0].name;
+
     loginScreen.style.display = "block";
 
     app.style.display = "none";
@@ -369,6 +453,8 @@ function showLogin(){
 
 function showApp(){
 
+    applyTheme();
+
     loginScreen.style.display = "none";
 
     app.style.display = "block";
@@ -378,6 +464,8 @@ function showApp(){
     homeScreen.style.display = "block";
 
     updateAdminButton();
+
+    updateProfileEditButton();
 
     updateCurrentUserProfile();
 
@@ -483,6 +571,34 @@ function updateAdminButton(){
 
 
 // =====================
+// 프로필 수정 버튼 표시
+// =====================
+
+function updateProfileEditButton(){
+
+    if(!profileEditButton){
+        return;
+    }
+
+    if(
+        currentUser &&
+        currentUser.role === "user"
+    ){
+
+        profileEditButton.style.display =
+        "block";
+
+    }else{
+
+        profileEditButton.style.display =
+        "none";
+
+    }
+
+}
+
+
+// =====================
 // 현재 사용자 프로필 표시
 // =====================
 
@@ -496,8 +612,12 @@ function updateCurrentUserProfile(){
     currentUserName.textContent =
     currentUser.nickname;
 
-    currentUserIcon.textContent =
-    currentUser.profileEmoji || "👤";
+    renderProfileIcon(
+        currentUserIcon,
+        currentUser.profileIcon ||
+        currentUser.profileEmoji ||
+        "❤️"
+    );
 
     profileNickname.textContent =
     currentUser.turtle.name;
@@ -528,24 +648,86 @@ function updateCurrentUserProfile(){
 
 
 // =====================
-// 거북이 이름 변경
+// 프로필 아이콘 표시
 // =====================
 
-function changeTurtleName(newName){
+function renderProfileIcon(
+    element,
+    icon
+){
+
+    element.replaceChildren();
+
+    if(
+        typeof icon === "string" &&
+        icon.startsWith("data:image/")
+    ){
+
+        const image =
+        document.createElement("img");
+
+        image.className =
+        "profile-photo-image";
+
+        image.src = icon;
+        image.alt = "프로필 사진";
+
+        element.appendChild(image);
+
+        return;
+
+    }
+
+    element.textContent =
+    icon || "❤️";
+
+}
+
+
+// =====================
+// 현재 사용자 프로필 변경
+// =====================
+
+function changeCurrentUserProfile(
+    newNickname,
+    newTurtleName,
+    newProfileIcon
+){
+
+    if(
+        !currentUser ||
+        currentUser.role !== "user"
+    ){
+        return false;
+    }
+
+    const nickname =
+    newNickname.trim();
 
     const turtleName =
-    newName.trim();
+    newTurtleName.trim();
 
-    if(!currentUser){
+    const profileIcon =
+    String(
+        newProfileIcon || ""
+    ).trim();
+
+    if(
+        nickname === "" ||
+        turtleName === "" ||
+        profileIcon === ""
+    ){
         return false;
     }
 
-    if(turtleName === ""){
-        return false;
-    }
+    currentUser.nickname =
+    nickname;
 
     currentUser.turtle.name =
     turtleName;
+
+    currentUser.profileIcon =
+    profileIcon;
 
     saveUsers();
 
