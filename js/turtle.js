@@ -46,6 +46,101 @@ function showTurtleSpeech(message){
         ? message + " " + catchphrase
         : message;
 
+
+    const turtleStage =
+    speech.closest(
+        ".turtle-stage"
+    );
+
+    const turtleCharacter =
+    document.getElementById(
+        "turtle-character"
+    );
+
+    if(
+        turtleStage &&
+        turtleCharacter
+    ){
+
+        // 이전 위치 초기화
+        speech.style.left = "0px";
+
+        const stageRect =
+        turtleStage.getBoundingClientRect();
+
+        const characterRect =
+        turtleCharacter.getBoundingClientRect();
+
+        const speechRect =
+        speech.getBoundingClientRect();
+
+
+        // 거북이 현재 중앙
+        const turtleCenterX =
+        characterRect.left
+        + characterRect.width / 2;
+
+
+        // 말풍선을 거북이 중앙에 맞춘 위치
+        let desiredLeft =
+        turtleCenterX
+        - speechRect.width / 2;
+
+
+        // 스테이지 가장자리 여백
+        const edgeMargin = 8;
+
+        const minLeft =
+        stageRect.left
+        + edgeMargin;
+
+        const maxLeft =
+        stageRect.right
+        - speechRect.width
+        - edgeMargin;
+
+
+        desiredLeft =
+        Math.max(
+            minLeft,
+            Math.min(
+                maxLeft,
+                desiredLeft
+            )
+        );
+
+
+        // 말풍선 이동
+        const moveX =
+        desiredLeft
+        - speechRect.left;
+
+        speech.style.left =
+        moveX + "px";
+
+
+        // 꼬리는 거북이 중앙을 가리킴
+        let tailX =
+        turtleCenterX
+        - desiredLeft;
+
+        tailX =
+        Math.max(
+            14,
+            Math.min(
+                speechRect.width - 14,
+                tailX
+            )
+        );
+
+        speech.style.setProperty(
+            "--turtle-speech-tail-x",
+            tailX + "px"
+        );
+
+    }
+
+
     speech.classList.remove("show");
     speech.classList.remove("hide");
 
@@ -54,18 +149,59 @@ function showTurtleSpeech(message){
     speech.classList.add("show");
 
     turtleSpeechTimer =
+    setTimeout(function(){
+
+        speech.classList.add("hide");
+
         setTimeout(function(){
 
-            speech.classList.add("hide");
+            speech.classList.remove("show");
+            speech.classList.remove("hide");
 
-            setTimeout(function(){
+        }, 250);
 
-                speech.classList.remove("show");
-                speech.classList.remove("hide");
+    }, 5000);
 
-            }, 250);
+}
 
-        }, 5000);
+function hideTurtleSpeech(){
+
+    const speech =
+    document.getElementById(
+        "turtle-speech"
+    );
+
+    if(!speech){
+        return;
+    }
+
+    clearTimeout(
+        turtleSpeechTimer
+    );
+
+    if(
+        !speech.classList.contains(
+            "show"
+        )
+    ){
+        return;
+    }
+
+    speech.classList.add(
+        "hide"
+    );
+
+    setTimeout(function(){
+
+        speech.classList.remove(
+            "show"
+        );
+
+        speech.classList.remove(
+            "hide"
+        );
+
+    }, 250);
 
 }
 
