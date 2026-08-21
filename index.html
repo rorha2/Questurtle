@@ -56,22 +56,160 @@
 
 <div id="app" style="display:none;">
 
-    <h1 class="logo">
+    <header class="app-header">
+
+        <h1 class="logo">
+
+            <button
+                type="button"
+                class="logo-button"
+                id="home-logo-button"
+                aria-label="홈으로 이동">
+
+                <img
+                    class="logo-image"
+                    src="images/logo/questurtle-logo.png"
+                    alt="Questurtle">
+
+            </button>
+
+        </h1>
 
         <button
             type="button"
-            class="logo-button"
-            id="home-logo-button"
-            aria-label="홈으로 이동">
+            class="side-menu-button"
+            id="side-menu-button"
+            aria-label="메뉴 열기"
+            aria-expanded="false">
 
-            <img
-                class="logo-image"
-                src="images/logo/questurtle-logo.png"
-                alt="Questurtle">
+            <span></span>
+            <span></span>
+            <span></span>
 
         </button>
 
-    </h1>
+    </header>
+
+
+<!-- 사이드 메뉴 -->
+<div
+    class="side-menu-overlay"
+    id="side-menu-overlay"
+    aria-hidden="true">
+
+    <aside
+        class="side-menu"
+        id="side-menu">
+
+        <button
+            type="button"
+            class="side-menu-close"
+            id="side-menu-close"
+            aria-label="메뉴 닫기">
+            ×
+        </button>
+
+        <nav
+            class="side-menu-list"
+            aria-label="전체 메뉴">
+
+            <button
+                type="button"
+                id="side-menu-profile-button">
+                프로필
+            </button>
+
+            <button
+                type="button"
+                disabled>
+                거북이 정보
+            </button>
+
+            <hr>
+
+            <button
+                type="button"
+                id="side-menu-quest-button">
+                퀘스트
+            </button>
+
+            <button
+                type="button"
+                id="side-menu-bag-button">
+                가방
+            </button>
+
+            <button
+                type="button"
+                id="side-menu-shop-button">
+                상점
+            </button>
+
+            <button
+                type="button"
+                disabled>
+                마을
+            </button>
+
+            <hr>
+
+            <button
+                type="button"
+                id="settings-button">
+                설정
+            </button>
+
+            <button
+                type="button"
+                id="side-menu-logout-button">
+                로그아웃
+            </button>
+
+        </nav>
+
+    </aside>
+
+</div>
+
+
+<!-- 공용 확인 팝업 -->
+<div
+    class="confirm-overlay"
+    id="confirm-overlay"
+    aria-hidden="true">
+
+    <div
+        class="confirm-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="confirm-message">
+
+        <p
+            class="confirm-message"
+            id="confirm-message">
+        </p>
+
+        <div class="confirm-actions">
+
+            <button
+                type="button"
+                class="confirm-button confirm-cancel"
+                id="confirm-cancel-button">
+                아니요
+            </button>
+
+            <button
+                type="button"
+                class="confirm-button confirm-ok"
+                id="confirm-ok-button">
+                네
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
 
 
 <!-- ■■■■■ 홈 화면 ■■■■■ -->
@@ -80,18 +218,54 @@
     <!-- 현재 로그인 사용자 -->
     <section id="current-user-card">
 
-        <span id="current-user-icon">
-            👤
-        </span>
+        <div class="current-user-info">
 
-        <span id="current-user-name">
-            사용자
-        </span>
+            <span id="current-user-icon">
+                👤
+            </span>
+
+            <span id="current-user-name">
+                사용자
+            </span>
+
+        </div>
+
+        <div
+            class="current-user-point"
+            id="point-card">
+
+            ⭐ <span class="point-number"></span> P
+
+        </div>
 
     </section>
 
     <!-- 프로필 카드 -->
     <header class="profile">
+
+        <div class="turtle-profile-info">
+
+            <h2 id="profile-nickname">
+            꺼북
+            </h2>
+
+            <div class="turtle-level-info">
+
+                <span>
+                Lv.<span id="turtle-level">1</span>
+                </span>
+
+                <span>
+                [
+                <span id="turtle-exp">0</span>
+                /
+                <span id="turtle-max-exp">2000</span>
+                ]
+                </span>
+
+            </div>
+
+        </div>
 
         <div class="turtle-stage">
 
@@ -124,62 +298,67 @@
 
         </div>
 
-        <h2 id="profile-nickname">
-        꺼북
-        </h2>
-
-        <p>
-        Lv.<span id="turtle-level">1</span>
-        </p>
-
-        <p>
-        [
-        <span id="turtle-exp">0</span>
-        /
-        <span id="turtle-max-exp">2000</span>
-        ]
-        </p>
-
     </header>
 
-    <!-- 홈 / 포인트 카드 -->
-    <section class="point" id="point-card">
 
-        <p>
-        ⭐ <span class="point-number"></span> P
-        </p>
+<!-- 홈 / 빠른 메뉴 -->
+<nav
+    class="home-quick-menu"
+    aria-label="빠른 메뉴">
 
-    </section>
+    <button
+        type="button"
+        class="home-quick-button"
+        id="quest-button">
 
-    <!-- 홈 / 메뉴 카드 -->
-    <section class="menu">
+        <img
+            src="images/icons/quest.png"
+            alt="">
 
-        <div>
+        <span>퀘스트</span>
 
-            <button class="menu-button" id="quest-button">
-            퀘스트
-            </button>
+    </button>
 
-            <button class="menu-button" id="shop-button">
-            상점
-            </button>
+    <button
+        type="button"
+        class="home-quick-button"
+        id="feed-button">
 
-        </div>
+        <img
+            src="images/icons/feed.png"
+            alt="">
 
-        <div>
+        <span>먹이주기</span>
 
-            <button class="menu-button" id="bag-button">
-            가방
-            </button>
+    </button>
 
-            <button class="menu-button" id="settings-button">
-            설정
-            </button>
+    <button
+        type="button"
+        class="home-quick-button"
+        id="bag-button">
 
-        </div>
+        <img
+            src="images/icons/bag.png"
+            alt="">
 
-    </section>
+        <span>가방</span>
 
+    </button>
+
+    <button
+        type="button"
+        class="home-quick-button"
+        id="shop-button">
+
+        <img
+            src="images/icons/shop.png"
+            alt="">
+
+        <span>상점</span>
+
+    </button>
+
+</nav>
 
 </main>
 
@@ -481,7 +660,7 @@
 
 </main>
 
-<!-- ■■■■■ 프로필 수정 화면 ■■■■■ -->
+<!-- ■■■■■ 프로필 화면 ■■■■■ -->
 <main id="profile-edit-screen" style="display:none;">
 
     <nav
@@ -513,7 +692,7 @@
 
     </nav>
 
-        <h1>프로필 수정</h1>
+        <h1>프로필</h1>
 
         <section class="profile-edit-form">
 
@@ -692,7 +871,7 @@
 
 <!-- 현재 버전 -->
 <footer class="ver">
-    0.93 Ver
+    0.952 Ver
 </footer>
 
 </div>

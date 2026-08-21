@@ -22,3 +22,89 @@ function hideAll(){
 
 }
 
+
+// =====================
+// 공용 확인 팝업
+// =====================
+
+function showConfirm(
+    message,
+    cancelText = "아니요",
+    okText = "네"
+){
+
+    return new Promise(function(resolve){
+
+        confirmMessage.textContent =
+        message;
+
+        confirmCancelButton.textContent =
+        cancelText;
+
+        confirmOkButton.textContent =
+        okText;
+
+
+        confirmOverlay.classList.add(
+            "is-open"
+        );
+
+        confirmOverlay.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+
+        function closeConfirm(result){
+
+            confirmOverlay.classList.remove(
+                "is-open"
+            );
+
+            confirmOverlay.setAttribute(
+                "aria-hidden",
+                "true"
+            );
+
+            confirmCancelButton.removeEventListener(
+                "click",
+                handleCancel
+            );
+
+            confirmOkButton.removeEventListener(
+                "click",
+                handleOk
+            );
+
+            resolve(result);
+
+        }
+
+
+        function handleCancel(){
+
+            closeConfirm(false);
+
+        }
+
+
+        function handleOk(){
+
+            closeConfirm(true);
+
+        }
+
+
+        confirmCancelButton.addEventListener(
+            "click",
+            handleCancel
+        );
+
+        confirmOkButton.addEventListener(
+            "click",
+            handleOk
+        );
+
+    });
+
+}

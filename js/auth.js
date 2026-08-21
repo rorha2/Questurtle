@@ -525,7 +525,16 @@ function login(){
 // 로그아웃
 // =====================
 
-function logout(){
+async function logout(){
+
+    const confirmed =
+    await showConfirm(
+        "로그아웃 할까요?"
+    );
+
+    if(!confirmed){
+        return false;
+    }
 
     localStorage.removeItem(
         "currentUserId"
@@ -540,6 +549,8 @@ function logout(){
     loginPasswordInput.value = "";
 
     showLogin();
+
+    return true;
 
 }
 
@@ -580,10 +591,7 @@ function updateProfileEditButton(){
         return;
     }
 
-    if(
-        currentUser &&
-        currentUser.role === "user"
-    ){
+    if(currentUser){
 
         profileEditButton.style.display =
         "block";
@@ -694,10 +702,7 @@ function changeCurrentUserProfile(
     newProfileIcon
 ){
 
-    if(
-        !currentUser ||
-        currentUser.role !== "user"
-    ){
+    if(!currentUser){
         return false;
     }
 

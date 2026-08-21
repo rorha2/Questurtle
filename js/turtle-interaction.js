@@ -99,14 +99,29 @@ let turtleLastPetX = 0;
 let turtlePetDirection = 0;
 let turtlePetDirectionStartX = 0;
 
+let turtlePetTurnCount = 0;
+let turtlePetSpeechShown = false;
+
 const TURTLE_PET_TURN_DISTANCE = 10;
 
 // 들어올리기 (lift)
 let turtleLiftFrame = 1;
 let turtleLiftAnimation = null;
+let turtleLiftLastX = 0;
 
 const TURTLE_LIFT_FRAME_INTERVAL = 180;
 
+let turtleDropTimer = null;
+let turtleLandingTimer = null;
+
+// 웃기 (happy)
+let turtleHappyAnimation = null;
+let turtleHappyTimer = null;
+
+const TURTLE_HAPPY_FRAME_INTERVAL = 180;
+const TURTLE_HAPPY_DURATION = 1000;
+
+// 걷기
 let turtleWalkTimer = null;
 let turtleIsWalking = false;
 
@@ -114,7 +129,7 @@ const TURTLE_WALK_MOVE_INTERVAL = 15;
 const TURTLE_WALK_FRAME_INTERVAL = 160;
 const TURTLE_WALK_STEP = 1;
 
-// 자율산책
+// 자율산책 (wander)
 let turtleWanderTimer = null;
 
 const TURTLE_WANDER_MIN_DELAY = 7000;
@@ -132,6 +147,28 @@ const TURTLE_WANDER_STEP = 1;
 function handleTurtlePointerDown(event){
 
     event.preventDefault();
+
+    clearInterval(
+        turtleHappyAnimation
+    );
+
+    clearTimeout(
+        turtleHappyTimer
+    );
+
+    turtleHappyAnimation = null;
+    turtleHappyTimer = null;
+
+    clearTimeout(
+        turtleDropTimer
+    );
+
+    clearTimeout(
+        turtleLandingTimer
+    );
+
+    turtleDropTimer = null;
+    turtleLandingTimer = null;
 
     clearTimeout(
         turtleWanderTimer
@@ -157,6 +194,14 @@ function handleTurtlePointerDown(event){
 
     if(dragLayer){
 
+        dragLayer.classList.remove(
+            "dropping"
+        );
+
+        turtleCharacter.classList.remove(
+            "landing"
+        );
+
         turtleDragStartX =
         parseFloat(
             dragLayer.dataset.moveX || 0
@@ -180,7 +225,10 @@ function handleTurtlePointerDown(event){
             return;
         }
 
-        turtleInteractionType = "hold";
+        turtleInteractionType = "lift";
+
+        turtleLiftLastX =
+        event.clientX;
 
         hideTurtleSpeech();
 
@@ -223,7 +271,7 @@ function handleTurtlePointerMove(event){
         return;
     }
 
-    if(turtleInteractionType === "hold"){
+    if(turtleInteractionType === "lift"){
 
         const dragLayer =
         turtleCharacter.closest(
@@ -234,6 +282,29 @@ function handleTurtlePointerMove(event){
         turtleCharacter.closest(
             ".turtle-stage"
         );
+
+        const liftDirection =
+        event.clientX
+        - turtleLiftLastX;
+
+        if(liftDirection < -7){
+
+            turtleCharacter.style.scale =
+            "1 1";
+
+        }else if(liftDirection > 7){
+
+            turtleCharacter.style.scale =
+            "-1 1";
+
+        }
+
+        if(Math.abs(liftDirection) > 7){
+
+            turtleLiftLastX =
+            event.clientX;
+
+        }
 
         const stageRect =
         turtleStage.getBoundingClientRect();
@@ -362,6 +433,9 @@ function handleTurtlePointerMove(event){
                 "거북이 쓰다듬기!"
             );
 
+            turtlePetTurnCount = 0;
+            turtlePetSpeechShown = false;
+
         }
 
         const petMoveX =
@@ -420,6 +494,34 @@ function handleTurtlePointerMove(event){
                 "images/characters/turtle-pet-"
                 + turtlePetFrame
                 + ".png";
+
+                turtlePetTurnCount += 1;
+
+                if(Math.random() < 0.35){
+
+                    showTurtleHeart();
+
+                }
+
+                if(
+                    turtlePetTurnCount >= 2 &&
+                    !turtlePetSpeechShown
+                ){
+
+                    turtlePetSpeechShown = true;
+
+                    const message =
+                    getRandomTurtleDialogue(
+                        "petting"
+                    );
+
+                    showTurtleSpeech(
+                        message,
+                        false,
+                        1300
+                    );
+
+                }
 
             }
 
@@ -689,6 +791,47 @@ function scheduleTurtleWander(){
 
 
 // =====================
+// 거북이 웃기
+// =====================
+
+function playTurtleHappy(){
+
+    clearInterval(
+        turtleHappyAnimation
+    );
+
+    clearTimeout(
+        turtleHappyTimer
+    );
+
+
+    let happyFrame = 1;
+
+    turtleCharacter.src =
+"images/characters/turtle-happy-2.png";
+
+    
+    turtleHappyTimer =
+    setTimeout(function(){
+
+        clearInterval(
+            turtleHappyAnimation
+        );
+
+        turtleHappyAnimation = null;
+        turtleHappyTimer = null;
+
+        turtleCharacter.src =
+        "images/characters/turtle-idle-1.png";
+
+        scheduleTurtleWander();
+
+    }, TURTLE_HAPPY_DURATION);
+
+}
+
+
+// =====================
 // 누르기 종료
 // =====================
 
@@ -722,12 +865,19 @@ function handleTurtlePointerUp(){
         );
 
         if(
-            turtleInteractionType === "hold"
+            turtleInteractionType === "lift"
         ){
 
-            dragLayer.classList.add(
-                "dropping"
-            );
+            const isHighDrop =
+            currentY <= -30;
+
+            if(isHighDrop){
+
+                dragLayer.classList.add(
+                    "dropping"
+                );
+
+            }
 
             dragLayer.style.transform =
             "translate("
@@ -739,28 +889,52 @@ function handleTurtlePointerUp(){
 
             dragLayer.dataset.moveY = 0;
 
-            setTimeout(function(){
 
-                dragLayer.classList.remove(
-                    "dropping"
-                );
+            if(isHighDrop){
 
-                turtleCharacter.classList.add(
-                    "landing"
-                );
-
-
+                turtleDropTimer =
                 setTimeout(function(){
 
-                    turtleCharacter.classList.remove(
+                    dragLayer.classList.remove(
+                        "dropping"
+                    );
+
+                    turtleCharacter.classList.add(
                         "landing"
                     );
 
-                    walkTurtleTo(0);
+                    turtleLandingTimer =
+                    setTimeout(function(){
+
+                        turtleCharacter.classList.remove(
+                            "landing"
+                        );
+
+                        walkTurtleTo(0);
+
+                    }, 1000);
+
+                }, 500);
+
+            }else{
+
+                dragLayer.style.transition =
+                "transform 0.3s ease-out";
+
+                setTimeout(function(){
+
+                    dragLayer.style.transition = "";
+
+                    turtleLandingTimer =
+                    setTimeout(function(){
+
+                        walkTurtleTo(0);
+
+                    }, 700);
 
                 }, 300);
 
-            }, 500);
+            }
 
         }
 
@@ -772,6 +946,42 @@ function handleTurtlePointerUp(){
 
         handleTurtleTouch();
 
+    }else if(
+        turtleInteractionType === "pet"
+    ){
+
+        const message =
+        getRandomTurtleDialogue(
+            "pet"
+        );
+
+        showTurtleSpeech(message);
+
+        showTurtleHearts();
+
+        const receivedPetReward =
+        receivePetReward();
+
+        if(receivedPetReward){
+
+            showTurtleReward([
+                {
+                    type:"xp",
+                    amount:2,
+                    label:"XP"
+                }
+            ]);
+
+        }
+
+        turtleIsPressing = false;
+
+        playTurtleHappy();
+
+        turtleInteractionType = null;
+
+        return;
+
     }
 
     turtleIsPressing = false;
@@ -780,7 +990,7 @@ function handleTurtlePointerUp(){
     "images/characters/turtle-idle-1.png";
 
     if(
-        turtleInteractionType !== "hold"
+        turtleInteractionType !== "lift"
     ){
 
         scheduleTurtleWander();

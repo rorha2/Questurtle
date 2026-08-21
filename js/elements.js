@@ -95,6 +95,9 @@ document.getElementById("use-point");
 const questButton =
 document.getElementById("quest-button");
 
+const feedButton =
+document.getElementById("feed-button");
+
 const shopButton =
 document.getElementById("shop-button");
 
@@ -192,6 +195,72 @@ document.getElementById(
 const homeLogoButton =
 document.getElementById(
     "home-logo-button"
+);
+
+
+// 사이드 메뉴
+
+const sideMenuButton =
+document.getElementById(
+    "side-menu-button"
+);
+
+const sideMenuOverlay =
+document.getElementById(
+    "side-menu-overlay"
+);
+
+const sideMenuClose =
+document.getElementById(
+    "side-menu-close"
+);
+
+const sideMenuProfileButton =
+document.getElementById(
+    "side-menu-profile-button"
+);
+
+const sideMenuQuestButton =
+document.getElementById(
+    "side-menu-quest-button"
+);
+
+const sideMenuBagButton =
+document.getElementById(
+    "side-menu-bag-button"
+);
+
+const sideMenuShopButton =
+document.getElementById(
+    "side-menu-shop-button"
+);
+
+const sideMenuLogoutButton =
+document.getElementById(
+    "side-menu-logout-button"
+);
+
+
+// 공용 확인 팝업
+
+const confirmOverlay =
+document.getElementById(
+    "confirm-overlay"
+);
+
+const confirmMessage =
+document.getElementById(
+    "confirm-message"
+);
+
+const confirmCancelButton =
+document.getElementById(
+    "confirm-cancel-button"
+);
+
+const confirmOkButton =
+document.getElementById(
+    "confirm-ok-button"
 );
 
 

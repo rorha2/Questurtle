@@ -27,7 +27,11 @@ function getTurtleCatchphrase(){
 
 }
 
-function showTurtleSpeech(message){
+function showTurtleSpeech(
+    message,
+    useCatchphrase = true,
+    duration = 5000
+){
 
     const speech =
     document.getElementById("turtle-speech");
@@ -42,7 +46,7 @@ function showTurtleSpeech(message){
     getTurtleCatchphrase();
 
     speech.textContent =
-    catchphrase
+    useCatchphrase && catchphrase
         ? message + " " + catchphrase
         : message;
 
@@ -160,7 +164,7 @@ function showTurtleSpeech(message){
 
         }, 250);
 
-    }, 5000);
+    }, duration);
 
 }
 
@@ -272,6 +276,221 @@ function showTurtleReward(rewards){
 }
 
 
+let lastTurtleHeartX = null;
+let lastTurtleHeartY = null;
+
+
+// =====================
+// 거북이 하트 효과
+// =====================
+
+function showTurtleHeart(){
+
+    const turtleStage =
+    document.querySelector(
+        ".turtle-stage"
+    );
+
+    const turtleCharacter =
+    document.getElementById(
+        "turtle-character"
+    );
+
+    if(
+        !turtleStage ||
+        !turtleCharacter
+    ){
+        return;
+    }
+
+    const stageRect =
+    turtleStage.getBoundingClientRect();
+
+    const turtleRect =
+    turtleCharacter.getBoundingClientRect();
+
+
+    const heart =
+    document.createElement(
+        "span"
+    );
+
+    heart.classList.add(
+        "turtle-heart"
+    );
+
+    heart.textContent = "🧡";
+
+
+    // 거북이 주변 랜덤 위치
+
+    let randomX;
+    let randomY;
+
+    let attempts = 0;
+
+    do{
+
+        randomX =
+        Math.random()
+        * turtleRect.width
+        * 0.8
+        + turtleRect.width * 0.1;
+
+        randomY =
+        turtleRect.height * 0.15
+        + Math.random()
+        * turtleRect.height
+        * 0.2;
+
+        attempts += 1;
+
+    }while(
+        lastTurtleHeartX !== null &&
+        Math.hypot(
+            randomX - lastTurtleHeartX,
+            randomY - lastTurtleHeartY
+        ) < 35 &&
+        attempts < 5
+    );
+
+    lastTurtleHeartX = randomX;
+    lastTurtleHeartY = randomY;
+
+
+    heart.style.left =
+    turtleRect.left
+    - stageRect.left
+    + randomX
+    + "px";
+
+    heart.style.top =
+    turtleRect.top
+    - stageRect.top
+    + randomY
+    + "px";
+
+
+    turtleStage.appendChild(
+        heart
+    );
+
+
+    heart.addEventListener(
+        "animationend",
+        function(){
+
+            heart.remove();
+
+        },
+        {
+            once:true
+        }
+    );
+
+}
+
+
+// =====================
+// 거북이 하트 효과
+// =====================
+
+function showTurtleHearts(){
+
+    const turtleStage =
+    document.querySelector(
+        ".turtle-stage"
+    );
+
+    const turtleCharacter =
+    document.getElementById(
+        "turtle-character"
+    );
+
+    if(
+        !turtleStage ||
+        !turtleCharacter
+    ){
+        return;
+    }
+
+    const stageRect =
+    turtleStage.getBoundingClientRect();
+
+    const turtleRect =
+    turtleCharacter.getBoundingClientRect();
+
+
+    for(let i = 0; i < 3; i++){
+
+        const heart =
+        document.createElement(
+            "span"
+        );
+
+        heart.classList.add(
+            "turtle-heart"
+        );
+
+        heart.textContent = "🧡";
+
+
+        const isFlipped =
+        turtleCharacter.style.scale === "-1 1";
+
+        const centerX =
+        turtleRect.left
+        - stageRect.left
+        + turtleRect.width
+        * (
+            isFlipped
+                ? 0.68
+                : 0.325
+        );
+
+        const topY =
+        turtleRect.top
+        - stageRect.top;
+
+
+        heart.style.left =
+        centerX
+        + (i - 1) * 28
+        + "px";
+
+        heart.style.top =
+        topY
+        + turtleRect.height * 0.2
+        + Math.abs(i - 1) * 10
+        + "px";
+
+        heart.style.animationDelay =
+        i * 0.08
+        + "s";
+
+
+        turtleStage.appendChild(
+            heart
+        );
+
+
+        heart.addEventListener(
+            "animationend",
+            function(){
+
+                heart.remove();
+
+            },
+            {
+                once:true
+            }
+        );
+
+    }
+
+}
+
+
 // =====================
 // 거북이 경험치 지급
 // =====================
@@ -363,6 +582,174 @@ function receiveTouchReward(){
 
     interaction.touchCount += 1;
     interaction.lastTouchRewardAt = now;
+
+    saveUsers();
+
+    return true;
+
+}
+
+
+// =====================
+// 상호작용-쓰다듬기 보상
+// =====================
+
+function receivePetReward(){
+
+    if(!currentUser){
+        return false;
+    }
+
+    const today =
+    new Date().toLocaleDateString("sv-SE");
+
+    const now =
+    Date.now();
+
+    const cooldown =
+    5 * 60 * 1000;
+
+    if(!currentUser.turtleInteraction){
+
+        currentUser.turtleInteraction = {
+            touchDate:"",
+            touchCount:0,
+            lastTouchRewardAt:0,
+            petDate:"",
+            petCount:0,
+            lastPetRewardAt:0
+        };
+
+    }
+
+    const interaction =
+    currentUser.turtleInteraction;
+
+
+    // 기존 데이터 보완
+
+    if(
+        typeof interaction.petDate
+        !== "string"
+    ){
+        interaction.petDate = "";
+    }
+
+    if(
+        typeof interaction.petCount
+        !== "number"
+    ){
+        interaction.petCount = 0;
+    }
+
+    if(
+        typeof interaction.lastPetRewardAt
+        !== "number"
+    ){
+        interaction.lastPetRewardAt = 0;
+    }
+
+
+    // 날짜가 바뀌면 초기화
+
+    if(interaction.petDate !== today){
+
+        interaction.petDate = today;
+        interaction.petCount = 0;
+        interaction.lastPetRewardAt = 0;
+
+    }
+
+
+    // 하루 최대 10회
+
+    if(interaction.petCount >= 10){
+        return false;
+    }
+
+
+    // 5분 쿨타임
+
+    if(
+        now - interaction.lastPetRewardAt
+        < cooldown
+    ){
+        return false;
+    }
+
+
+    giveTurtleExp(2);
+
+    interaction.petCount += 1;
+    interaction.lastPetRewardAt = now;
+
+    saveUsers();
+
+    return true;
+
+}
+
+
+// =====================
+// 상호작용-쓰다듬기 보상
+// =====================
+
+function receivePetReward(){
+
+    if(!currentUser){
+        return false;
+    }
+
+    const now =
+    Date.now();
+
+    const cooldown =
+    5 * 60 * 1000;
+
+
+    if(!currentUser.turtleInteraction){
+
+        currentUser.turtleInteraction = {
+            touchDate:"",
+            touchCount:0,
+            lastTouchRewardAt:0,
+            lastPetRewardAt:0
+        };
+
+    }
+
+
+    const interaction =
+    currentUser.turtleInteraction;
+
+
+    // 기존 데이터 보완
+
+    if(
+        typeof interaction.lastPetRewardAt
+        !== "number"
+    ){
+
+        interaction.lastPetRewardAt = 0;
+
+    }
+
+
+    // 5분 쿨타임
+
+    if(
+        now - interaction.lastPetRewardAt
+        < cooldown
+    ){
+
+        return false;
+
+    }
+
+
+    giveTurtleExp(2);
+
+    interaction.lastPetRewardAt = now;
 
     saveUsers();
 

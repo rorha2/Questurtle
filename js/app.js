@@ -23,6 +23,83 @@ if(isLoggedIn){
 // 앱 데이터 시작
 // =====================
 
+function createExitGuard(){
+
+    const currentState =
+    window.history.state;
+
+    if(
+        currentState?.exitGuardReady
+    ){
+        return;
+    }
+
+    const screenId =
+    currentState?.screenId ||
+    "home-screen";
+
+    const depth =
+    currentState?.depth || 0;
+
+
+    window.history.replaceState(
+        {
+            questurtle:true,
+            screenId:screenId,
+            depth:depth,
+            exitGuard:true,
+            exitGuardReady:true
+        },
+        ""
+    );
+
+    window.history.pushState(
+        {
+            questurtle:true,
+            screenId:screenId,
+            depth:depth,
+            exitGuardReady:true
+        },
+        ""
+    );
+
+}
+
+
+function prepareExitGuard(){
+
+    if(
+        navigator.userActivation?.isActive
+    ){
+
+        createExitGuard();
+
+        return;
+    }
+
+
+    const activateExitGuard =
+    function(){
+
+        document.removeEventListener(
+            "click",
+            activateExitGuard,
+            true
+        );
+
+        createExitGuard();
+
+    };
+
+
+    document.addEventListener(
+        "click",
+        activateExitGuard,
+        true
+    );
+
+}
+
 function startApp(){
 
     loadCurrentUserData();
@@ -38,6 +115,18 @@ function startApp(){
     updateQuest();
 
     updateShop();
+
+
+    window.history.replaceState(
+        {
+            questurtle:true,
+            screenId:"home-screen",
+            depth:0
+        },
+        ""
+    );
+
+    prepareExitGuard();
 
 }
 
@@ -130,15 +219,271 @@ function resetDailyQuests(){
 
 
 // =====================
+// 사이드 메뉴
+// =====================
+
+function openSideMenu(){
+
+    sideMenuOverlay.classList.add(
+        "is-open"
+    );
+
+    sideMenuOverlay.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+    sideMenuButton.setAttribute(
+        "aria-expanded",
+        "true"
+    );
+
+
+    const currentState =
+    window.history.state;
+
+    window.history.pushState(
+        {
+            questurtle:true,
+            screenId:
+                currentState?.screenId ||
+                "home-screen",
+            depth:
+                currentState?.depth || 0,
+            exitGuardReady:true,
+            overlay:"side-menu"
+        },
+        ""
+    );
+
+}
+
+function closeSideMenu(){
+
+    sideMenuOverlay.classList.remove(
+        "is-open"
+    );
+
+    sideMenuOverlay.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+    sideMenuButton.setAttribute(
+        "aria-expanded",
+        "false"
+    );
+
+}
+
+sideMenuButton.addEventListener(
+    "click",
+    openSideMenu
+);
+
+sideMenuClose.addEventListener(
+    "click",
+    function(){
+
+        window.history.back();
+
+    }
+);
+
+sideMenuOverlay.addEventListener(
+    "click",
+    function(event){
+
+        if(
+            event.target ===
+            sideMenuOverlay
+        ){
+            window.history.back();
+        }
+
+    }
+);
+
+sideMenuProfileButton.addEventListener(
+    "click",
+    function(){
+
+        closeSideMenu();
+
+        openProfileEditScreen();
+
+    }
+);
+
+sideMenuQuestButton.addEventListener(
+    "click",
+    function(){
+
+        closeSideMenu();
+
+        showScreen(
+            questScreen
+        );
+
+    }
+);
+
+sideMenuBagButton.addEventListener(
+    "click",
+    function(){
+
+        closeSideMenu();
+
+        updateBag();
+
+        showScreen(
+            bagScreen
+        );
+
+    }
+);
+
+sideMenuShopButton.addEventListener(
+    "click",
+    function(){
+
+        closeSideMenu();
+
+        showScreen(
+            shopScreen
+        );
+
+    }
+);
+
+sideMenuLogoutButton.addEventListener(
+    "click",
+    async function(){
+
+        const didLogout =
+        await logout();
+
+        if(didLogout){
+            closeSideMenu();
+        }
+
+    }
+);
+
+
+// =====================
+// 화면 이동
+// =====================
+
+function showScreen(
+    screen,
+    addHistory = true
+){
+
+    if(!screen){
+        return;
+    }
+
+    hideAll();
+
+    screen.style.display =
+    "block";
+
+
+    if(
+        addHistory &&
+        screen.id
+    ){
+
+        const currentState =
+        window.history.state;
+
+        const currentDepth =
+        currentState?.depth || 0;
+
+        if(
+            currentState?.overlay ===
+            "side-menu"
+        ){
+
+            window.history.replaceState(
+                {
+                    questurtle:true,
+                    screenId:screen.id,
+                    depth:currentDepth + 1,
+                    exitGuardReady:true
+                },
+                ""
+            );
+
+        }else{
+
+            window.history.pushState(
+                {
+                    questurtle:true,
+                    screenId:screen.id,
+                    depth:currentDepth + 1,
+                    exitGuardReady:true
+                },
+                ""
+            );
+
+        }
+
+    }
+
+}
+
+
+function pushOverlayHistory(
+    overlayName
+){
+
+    const currentState =
+    window.history.state;
+
+    window.history.pushState(
+        {
+            questurtle:true,
+            screenId:
+                currentState?.screenId ||
+                "home-screen",
+            depth:
+                currentState?.depth || 0,
+            exitGuardReady:true,
+            overlay:overlayName
+        },
+        ""
+    );
+
+}
+
+
+// =====================
 // 홈으로 이동
 // =====================
 
 function goHome(){
 
-    hideAll();
+    const currentState =
+    window.history.state;
 
-    homeScreen.style.display =
-    "block";
+    const currentDepth =
+    currentState?.depth || 0;
+
+    if(currentDepth > 0){
+
+        window.history.go(
+            -currentDepth
+        );
+
+        return;
+    }
+
+    showScreen(
+        homeScreen,
+        false
+    );
 
 }
 
@@ -163,13 +508,16 @@ document
 // 홈 → 포인트
 // =====================
 
-pointCard.addEventListener("click",function(){
+pointCard.addEventListener(
+    "click",
+    function(){
 
-    hideAll();
+        showScreen(
+            pointScreen
+        );
 
-    pointScreen.style.display="block";
-
-});
+    }
+);
 
 
 // =====================
@@ -184,23 +532,7 @@ document
         "click",
         function(){
 
-            const targetScreenId =
-            button.dataset.backTarget ||
-            "home-screen";
-
-            const targetScreen =
-            document.getElementById(
-                targetScreenId
-            );
-
-            if(!targetScreen){
-                return;
-            }
-
-            hideAll();
-
-            targetScreen.style.display =
-            "block";
+            window.history.back();
 
         }
     );
@@ -255,54 +587,72 @@ usePointButton.addEventListener("click",function(){
 // 퀘스트
 // =====================
 
-questButton.addEventListener("click",function(){
+questButton.addEventListener(
+    "click",
+    function(){
 
-    hideAll();
+        showScreen(
+            questScreen
+        );
 
-    questScreen.style.display="block";
-
-});
+    }
+);
 
 
 // =====================
 // 상점
 // =====================
 
-shopButton.addEventListener("click",function(){
+shopButton.addEventListener(
+    "click",
+    function(){
 
-    hideAll();
+        showScreen(
+            shopScreen
+        );
 
-    shopScreen.style.display="block";
-
-});
+    }
+);
 
 
 // =====================
 // 가방
 // =====================
 
-bagButton.addEventListener("click",function(){
+bagButton.addEventListener(
+    "click",
+    function(){
 
-    hideAll();
+        updateBag();
 
-    updateBag();
+        showScreen(
+            bagScreen
+        );
 
-    bagScreen.style.display = "block";
-
-});
+    }
+);
 
 
 // =====================
 // 설정
 // =====================
 
-settingsButton.addEventListener("click", () => {
+if(settingsButton){
 
-    hideAll();
+    settingsButton.addEventListener(
+        "click",
+        function(){
 
-    settingsScreen.style.display = "block";
+            closeSideMenu();
 
-});
+            showScreen(
+                settingsScreen
+            );
+
+        }
+    );
+
+}
 
 soundButton.addEventListener("click", () => {
 
@@ -352,7 +702,7 @@ function updateThemeOptions(){
 
                 selectTheme(theme.id);
 
-                closeThemeModal();
+                window.history.back();
 
             }
         );
@@ -374,6 +724,10 @@ function openThemeModal(){
     themeModal.setAttribute(
         "aria-hidden",
         "false"
+    );
+
+    pushOverlayHistory(
+        "theme-modal"
     );
 
 }
@@ -400,7 +754,7 @@ themeModal.addEventListener(
 
         if(event.target === themeModal){
 
-            closeThemeModal();
+            window.history.back();
 
         }
 
@@ -417,20 +771,23 @@ document.addEventListener(
             "flex"
         ){
 
-            closeThemeModal();
+            window.history.back();
 
         }
 
     }
 );
 
-adminButton.addEventListener("click", () => {
+adminButton.addEventListener(
+    "click",
+    function(){
 
-    hideAll();
+        showScreen(
+            adminScreen
+        );
 
-    adminScreen.style.display = "block";
-
-});
+    }
+);
 
 adminLoginButton.addEventListener("click", () => {
 
@@ -579,6 +936,10 @@ function openProfileIconModal(){
         "false"
     );
 
+    pushOverlayHistory(
+        "profile-icon-modal"
+    );
+
 }
 
 function closeProfileIconModal(){
@@ -595,10 +956,7 @@ function closeProfileIconModal(){
 
 function openProfileEditScreen(){
 
-    if(
-        !currentUser ||
-        currentUser.role !== "user"
-    ){
+    if(!currentUser){
         return;
     }
 
@@ -615,10 +973,9 @@ function openProfileEditScreen(){
 
     updateProfileIconPreview();
 
-    hideAll();
-
-    profileEditScreen.style.display =
-    "block";
+    showScreen(
+        profileEditScreen
+    );
 
 }
 
@@ -626,10 +983,7 @@ function closeProfileEditScreen(){
 
     closeProfileIconModal();
 
-    hideAll();
-
-    settingsScreen.style.display =
-    "block";
+    window.history.back();
 
 }
 
@@ -671,8 +1025,6 @@ profileEditSaveButton.addEventListener(
 
         alert("프로필이 저장되었어요.");
 
-        closeProfileEditScreen();
-
     }
 );
 
@@ -693,7 +1045,7 @@ profileIconOptions.forEach(
 
                 updateProfileIconPreview();
 
-                closeProfileIconModal();
+                window.history.back();
 
             }
         );
@@ -735,7 +1087,7 @@ profilePhotoInput.addEventListener(
 
             updateProfileIconPreview();
 
-            closeProfileIconModal();
+            window.history.back();
 
         }catch(error){
 
@@ -756,7 +1108,7 @@ profileIconModal.addEventListener(
 
         if(event.target === profileIconModal){
 
-            closeProfileIconModal();
+            window.history.back();
 
         }
 
@@ -773,7 +1125,7 @@ document.addEventListener(
             "flex"
         ){
 
-            closeProfileIconModal();
+            window.history.back();
 
         }
 
@@ -788,5 +1140,150 @@ document.addEventListener(
 
     }
 );
+
+
+// =====================
+// 브라우저 뒤로가기
+// =====================
+
+let exitConfirmOpen = false;
+let allowAppExit = false;
+
+window.addEventListener(
+    "pageshow",
+    function(){
+
+        if(!allowAppExit){
+            return;
+        }
+
+        allowAppExit = false;
+
+        window.location.reload();
+
+    }
+);
+
+window.addEventListener(
+    "popstate",
+    async function(event){
+
+        const state =
+        event.state;
+
+
+        if(exitConfirmOpen){
+
+            if(
+                state?.exitGuard
+            ){
+                window.history.forward();
+            }
+
+            return;
+        }
+
+
+        if(allowAppExit){
+
+            if(
+                state?.questurtle
+            ){
+
+                window.history.back();
+
+            }
+
+            return;
+        }
+
+
+        if(
+            themeModal.style.display ===
+            "flex"
+        ){
+
+            closeThemeModal();
+
+            return;
+        }
+
+
+        if(
+            profileIconModal.style.display ===
+            "flex"
+        ){
+
+            closeProfileIconModal();
+
+            return;
+        }
+
+
+        if(
+            state?.exitGuard
+        ){
+
+            window.history.forward();
+
+            exitConfirmOpen = true;
+
+            const confirmed =
+            await showConfirm(
+                "종료할까요?",
+                "취소",
+                "종료"
+            );
+
+            exitConfirmOpen = false;
+
+
+            if(confirmed){
+
+                allowAppExit = true;
+
+                window.history.back();
+
+            }
+
+            return;
+        }
+
+
+        if(
+            sideMenuOverlay.classList.contains(
+                "is-open"
+            )
+        ){
+
+            closeSideMenu();
+
+        }
+
+
+        if(
+            !state ||
+            !state.questurtle
+        ){
+            return;
+        }
+
+        const screen =
+        document.getElementById(
+            state.screenId
+        );
+
+        if(!screen){
+            return;
+        }
+
+        showScreen(
+            screen,
+            false
+        );
+
+    }
+);
+
 
 // localStorage.clear();
